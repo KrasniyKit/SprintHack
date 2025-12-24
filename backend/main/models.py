@@ -4,12 +4,12 @@ import uuid
 class BaseStation(models.Model):
     """Модель базовой станции для вычислений"""
 
-    STANDARTS = [
+    STANDARTS = [ # Перечисление для выбора стандартов связи БС
         ('4G', "4G"),
         ('5G','5G')
     ]
 
-    ANT_TYPES = [
+    ANT_TYPES = [ # Перечисление для выбора типов антенн БС
         ("Sector", "Секторная"),
         ("Radian", "Круговая"),
         ("Hex", "Восьмерка")
@@ -35,17 +35,21 @@ class BaseStation(models.Model):
     class Meta:
         verbose_name = 'Базовая станция'
         verbose_name_plural = 'Базовые станции'
-        ordering = ['station_id']
+        ordering = ['station_id'] # Сортировка по айдишникам станций
 
     def __str__(self):
         return self.name
 
     @property
     def cover_radius(self):
+        """Метод возвращающий радиус из площади по формуле из ТЗшки + можно обращаться как
+        к свойству объекта класса"""
         return (self.cover_area / 3.14) ** 0.5
 
     @property
     def cover_diameter(self):
+        """Метод возвращающий диаметр из площади по формуле из ТЗшки + можно обращаться как
+        к свойству объекта класса"""
         return 2 * self.cover_radius
 
 
