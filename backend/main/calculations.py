@@ -27,5 +27,10 @@ class MinimumStationsCalculator:
 
     @staticmethod
     def calculate_radius(area: float) -> float:
-        """Расчет радиуса зоны обслуживания из формулы в ТЗшке"""
+        """Метод для расчета радиуса зоны обслуживания с помощью формулы из ТЗшки"""
         return (area / 3.14) ** 0.5
+
+    @staticmethod
+    def calculate_cells_number(base_radius: float, zone_radius: float, coef: float) -> float:
+        """Метод для подсчета количества сот с помощью формулы из ТЗшки"""
+        return coef * (zone_radius / base_radius) ** 2
