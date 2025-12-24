@@ -89,7 +89,7 @@ class MinimumStationsCalculator:
                     break
 
         station_quantity = math.ceil(station_quantity)
-        CalculationResult = CalculationsResult(
+        calc_result = CalculationsResult(
             district_name=district.name,
             area=district.area,
             buildings_coef=coef,
@@ -99,3 +99,4 @@ class MinimumStationsCalculator:
             stations_quantity=station_quantity,
             handover_regulated=handover_regulated,
         )
+        return calc_result
