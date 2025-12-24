@@ -54,5 +54,25 @@ class BaseStation(models.Model):
         к свойству объекта класса"""
         return 2 * self.cover_radius
 
+class District(models.Model):
+    BUILDINGS_DENSITY = [
+        ('hard','Плотная застройка'),
+        ('med', 'Средняя застройка'),
+        ('low', 'Слабая застройка')
+    ]
+    """Модель района города"""
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable = False)
+    name = models.CharField(max_length = 255, unique=True,verbose_name = 'Название')
+    area = models.FloatField(verbose_name = "Площадь района")
+    density = models.CharField(max_length = 100, choices = BUILDINGS_DENSITY,
+                               verbose_name = 'Плотность застройки',default='med')
+
+    class Meta:
+        verbose_name = 'Район'
+        verbose_name_plural = 'Районы'
+
+    def __str__(self):
+        return self.name
+
 
 
