@@ -3,6 +3,7 @@ from .models import *
 
 
 class DistrictSerializer(serializers.ModelSerializer):
+    """Сериализатор для модели района"""
     class Meta:
         model = District
         fields = [
@@ -13,6 +14,7 @@ class DistrictSerializer(serializers.ModelSerializer):
 
 
 class BaseStationSerializer(serializers.ModelSerializer):
+    """Сериализатор для модели базовой станции"""
     class Meta:
         model = BaseStation
         fields = [
@@ -23,6 +25,7 @@ class BaseStationSerializer(serializers.ModelSerializer):
 
 
 class CalculationsResultSerializer(serializers.Serializer):
+    """Сериализатор для модели результатов вычислений"""
     district_name = serializers.CharField()
     area = serializers.FloatField()
     building_coef = serializers.FloatField()
