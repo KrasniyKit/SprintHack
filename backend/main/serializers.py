@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import *
 
+
 class DistrictSerializer(serializers.ModelSerializer):
     class Meta:
         model = District
@@ -10,14 +11,17 @@ class DistrictSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['created_at', 'updated_at']
 
+
 class BaseStationSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseStation
         fields = [
             'id', 'station_id', 'name', 'coverage_area', 'frequency',
             'ant_type', 'handover_min', 'handover_max', 'standard',
-            'coordinates','real_handover','cover_radius', 'cover_diameter'
+            'coordinates', 'real_handover', 'cover_radius', 'cover_diameter'
         ]
+
+
 class CalculationsResultSerializer(serializers.Serializer):
     district_name = serializers.CharField()
     area = serializers.FloatField()
@@ -28,4 +32,3 @@ class CalculationsResultSerializer(serializers.Serializer):
     stations_required = serializers.FloatField()
     handover_regulated = serializers.BooleanField()
     stations_quantity = serializers.IntegerField()
-
