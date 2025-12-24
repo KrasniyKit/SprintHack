@@ -32,6 +32,8 @@ class BaseStation(models.Model):
                                 verbose_name = 'Стандарт связи БС')
     coordinates = models.CharField(max_length = 100,verbose_name = 'Координаты БС')
 
+    real_handover = models.PositiveIntegerField(max_length = 100,verbose_name = 'Актуальный хендовер')
+
     class Meta:
         verbose_name = 'Базовая станция'
         verbose_name_plural = 'Базовые станции'
