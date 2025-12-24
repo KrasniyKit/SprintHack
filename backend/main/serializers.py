@@ -7,8 +7,7 @@ class DistrictSerializer(serializers.ModelSerializer):
     class Meta:
         model = District
         fields = [
-            'id', 'name', 'area', 'density',
-            'created_at', 'updated_at'
+            'id', 'name', 'area', 'density'
         ]
         read_only_fields = ['created_at', 'updated_at']
 
