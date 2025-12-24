@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from django.db.models import Avg
 from typing import List
 
-from models import BaseStation
+from models import BaseStation, District
 
 
 @dataclass
@@ -14,9 +14,8 @@ class CalculationsResult:
     area: float
     buildings_coef: float
     cover_radius: float
-    cells_number: float
+    cells_quantity: float
     cluster_size: float
-    stations_required: float
     handover_regulated: bool
     stations_quantity: int
 
@@ -57,8 +56,46 @@ class MinimumStationsCalculator:
         if len(unique_stations) < 3:  # Если уникальные не набрались, берем просто любые 3
             unique_stations = list(stations)[:3]
 
-        D1 = unique_stations[0].cover_diameter
-        D2 = unique_stations[1].cover_diameter
-        D3 = unique_stations[2].cover_diameter
+        d1 = unique_stations[0].cover_diameter
+        d2 = unique_stations[1].cover_diameter
+        d3 = unique_stations[2].cover_diameter
 
-        return D1 ** (5 / 2) + D2 ** (3 / 2) + D3 ** (1 / 2)
+        return d1 ** (5 / 2) + d2 ** (3 / 2) + d3 ** (1 / 2)
+
+    @classmethod
+    def calculate_stations_for_district(cls, district: District,
+                                        stations_in_district: List[BaseStation],
+                                        all_stations: List[BaseStation]) -> CalculationsResult:
+        """Метод для расчета минимального количества вышек в районе и получения результатов вычислений"""
+
+        coef = cls.BUILDING_COEFS[district.density]
+        service_radius = cls.calculate_radius(district.area)
+        avg_cover_radius = (sum(
+            cls.calculate_radius(s.cover_area) for s in stations_in_district)
+                            / len(stations_in_district)) if stations_in_district else 0
+
+        cell_quantity = cls.calculate_cells_number(service_radius, avg_cover_radius, coef)
+
+        cluster_size = cls.calculate_cluster_size(all_stations)
+
+        station_quantity = cluster_size / cell_quantity if cell_quantity > 0 else 0
+
+        handover_regulated = False
+        for station in stations_in_district:
+            if station.real_handover:
+                if station.real_handover < station.handover_min or station.real_handover > station.handover_max:
+                    handover_regulated = True
+                    station_quantity *= 1.4
+                    break
+
+        station_quantity = math.ceil(station_quantity)
+        CalculationResult = CalculationsResult(
+            district_name=district.name,
+            area=district.area,
+            buildings_coef=coef,
+            cover_radius=service_radius,
+            cells_quantity=cell_quantity,
+            cluster_size=cluster_size,
+            stations_quantity=station_quantity,
+            handover_regulated=handover_regulated,
+        )
