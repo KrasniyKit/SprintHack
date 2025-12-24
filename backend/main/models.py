@@ -28,7 +28,7 @@ class BaseStation(models.Model):
                                                verbose_name = "Нижняя граница хендовера БС")
     handover_max = models.PositiveIntegerField(max_length=100,
                                                verbose_name="Верхняя граница хендовера БС")
-    standart = models.CharField(max_length = 15, choices = STANDARTS,
+    standard = models.CharField(max_length = 15, choices = STANDARTS,
                                 verbose_name = 'Стандарт связи БС')
     coordinates = models.CharField(max_length = 100,verbose_name = 'Координаты БС')
 
