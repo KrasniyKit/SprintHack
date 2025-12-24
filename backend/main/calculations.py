@@ -55,7 +55,7 @@ class MinimumStationsCalculator:
 
         if len(unique_stations) < 3:  # Если уникальные не набрались, берем просто любые 3
             unique_stations = list(stations)[:3]
-
+        unique_stations.sort(key=lambda s: s.diameter, reverse=True)
         d1 = unique_stations[0].cover_diameter
         d2 = unique_stations[1].cover_diameter
         d3 = unique_stations[2].cover_diameter
