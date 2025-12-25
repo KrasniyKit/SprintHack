@@ -108,37 +108,4 @@ export const calculateOptimization = async ({
   }
 };
 
-/**
- * Альтернативный вариант - через POST запрос (если предпочитаете)
- */
-export const calculateOptimizationPost = async (data: {
-  districtId: string;
-  stationIds: string[];
-  buildingDensity: string;
-  handoverValue: string;
-}): Promise<CalculationResult> => {
-  try {
-    const densityMap: Record<string, string> = {
-      'low': 'low',
-      'medium': 'med',
-      'high': 'hard'
-    };
-    
-    const apiDensity = densityMap[data.buildingDensity] || 'med';
-
-    const requestData = {
-      district_id: data.districtId,
-      station_ids: data.stationIds, // Отправляем как массив
-      building_coef: apiDensity,
-      handover: data.handoverValue,
-    };
-
-    const response = await api.post<CalculationResult>('/calculations/', requestData);
-    return response.data;
-  } catch (error) {
-    console.error('Error calculating optimization:', error);
-    throw error;
-  }
-};
-
 export default api;

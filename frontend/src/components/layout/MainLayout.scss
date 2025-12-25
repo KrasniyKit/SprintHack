@@ -256,6 +256,16 @@
   @media (min-width: 640px) {
     flex: none;
   }
+
+  &.calculating {
+    background: $gray-500;
+    cursor: wait;
+    
+    &:hover {
+      background: $gray-500;
+      transform: none;
+    }
+  }
 }
 
 @keyframes pulse {
@@ -363,6 +373,20 @@
 }
 
 @keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
   from {
     transform: rotate(0deg);
   }

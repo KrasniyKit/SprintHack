@@ -24,7 +24,7 @@ const ResultsModal: React.FC<ResultsModalProps> = ({
   }
 
   const densityLabel = densityVariables[buildingDensity];
-  const handoverLabel = calculationResult.lowHandoverValue ? 'Низкий' : 'Оптимальный'; 
+  const handoverLabel = calculationResult.handover_regulated ? 'Низкий' : 'Оптимальный'; 
 
   return (
     <>
@@ -49,7 +49,7 @@ const ResultsModal: React.FC<ResultsModalProps> = ({
             <div className="resultsBackgroundPattern" />
             <p className="districtLabel">Целевой район: Центральный район</p>
             <div className="summaryMain">
-              <h1 className="stationsCount">{calculationResult.totalStations}</h1>
+              <h1 className="stationsCount">{calculationResult.stations_quantity}</h1>
               <span className="stationsLabel">Базовых станций требуется</span>
             </div>
             <div className="summaryBadges">
@@ -57,7 +57,7 @@ const ResultsModal: React.FC<ResultsModalProps> = ({
                 <span className="material-symbols-outlined">bolt</span>
                 {densityLabel} застройка
               </span>
-              <span className={`resultBadge ${calculationResult.lowHandoverValue ? 'bad' : 'optimal'}`}>
+              <span className={`resultBadge ${calculationResult.handover_regulated ? 'bad' : 'optimal'}`}>
                 <span className="material-symbols-outlined">check_circle</span>
                 {handoverLabel} хэндовер
               </span>

@@ -13,13 +13,13 @@ const StationTable: React.FC<StationTableProps> = ({
   selectedStations,
   onStationSelect,
 }) => {
-  const getStationTypeInfo = (type: BaseStation['type']) => {
+  const getStationTypeInfo = (type: BaseStation['ant_type']) => {
     switch (type) {
-      case 'секторная':
+      case 'Sector':
         return { label: 'Секторная', color: 'blue', letter: 'С' };
-      case 'круговая':
+      case 'Radian':
         return { label: 'Круговая', color: 'purple', letter: 'К' };
-      case 'восьмерка':
+      case 'Hex':
         return { label: 'Восьмерка', color: 'orange', letter: '8' };
       default:
         return { label: 'Сота', color: 'gray', letter: 'С' };
@@ -81,7 +81,7 @@ const StationTable: React.FC<StationTableProps> = ({
           </thead>
           <tbody>
             {stations.map((station) => {
-              const typeInfo = getStationTypeInfo(station.type);
+              const typeInfo = getStationTypeInfo(station.ant_type);
               const standardInfo = getStandardInfo(station.standard);
               const isSelected = selectedStations.includes(station.id);
               
@@ -104,7 +104,7 @@ const StationTable: React.FC<StationTableProps> = ({
                   </td>
                   <td>
                     <div className="coverageCell">
-                      <span className="coverageValue">{station.coverageArea}</span>
+                      <span className="coverageValue">{station.cover_area}</span>
                       <span className="coverageUnit">км²</span>
                     </div>
                   </td>
@@ -116,7 +116,7 @@ const StationTable: React.FC<StationTableProps> = ({
                   </td>
                   <td>
                     <div className="handoverCell">
-                      <span className="handoverValue">{station.handoverRange}</span>
+                      <span className="handoverValue">{station.handover_min} - {station.handover_max}</span>
                       <span className="handoverUnit">ед.</span>
                     </div>
                   </td>
@@ -132,7 +132,7 @@ const StationTable: React.FC<StationTableProps> = ({
                       <input
                         type="checkbox"
                         checked={isSelected}
-                        onChange={() => handleSelectStation(station.id)}
+                        onChange={() => handleSelectStation(station.station_id.toString())}
                         className="stationCheckbox"
                       />
                     </div>
