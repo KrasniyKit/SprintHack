@@ -22,7 +22,7 @@ from main.views import DistrictViewSet,BaseStationViewSet, CalculationViewSet
 router = routers.SimpleRouter()
 router.register(r'districts', DistrictViewSet)
 router.register(r'basestations', BaseStationViewSet)
-router.register(r'calculations', CalculationViewSet)
+router.register(r'calculations', CalculationViewSet,basename='calculations')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
