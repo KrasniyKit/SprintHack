@@ -6,35 +6,47 @@ import StationTable from '../stations/StationTable';
 import ParametersPanel from '../parameters/ParametersPanel';
 import ResultsModal from '../calculations/ResultsModal';
 import LoadingSpinner from '../common/LoadingSpinner';
+import { calculateOptimization } from '../../api';
 import './MainLayout.scss';
 
 const MainLayout: React.FC = () => {
   const { districts, stations, loading } = useData();
-  const [selectedDistrict, setSelectedDistrict] = useState('1');
+  const [selectedDistrict, setSelectedDistrict] = useState('');
   const [buildingDensity, setBuildingDensity] = useState<'low' | 'medium' | 'high'>('medium');
   const [handoverValue, setHandoverValue] = useState('');
   const [selectedStations, setSelectedStations] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCalculateEnabled, setIsCalculateEnabled] = useState(false);
+  const [calculationResult, setCalculationResult] = useState<any>(null);
+  const [isCalculating, setIsCalculating] = useState(false);
 
-  const mockResult = {
-    id: '1',
-    totalStations: 42,
-    lowHandoverValue: parseInt(handoverValue) < 50
-  };
+  // Автоматически выбираем первый район при загрузке
+  useEffect(() => {
+    if (districts.length > 0 && !selectedDistrict) {
+      setSelectedDistrict(districts[0].id);
+    }
+  }, [districts, selectedDistrict]);
 
   // Проверяем условия для активации кнопки расчета
   useEffect(() => {
     const hasHandoverValue = handoverValue.trim() !== '';
     const isHandoverNumber = /^\d+$/.test(handoverValue);
     const hasThreeStations = selectedStations.length === 3;
+    const hasDistrict = selectedDistrict !== '';
     
-    setIsCalculateEnabled(hasHandoverValue && isHandoverNumber && hasThreeStations);
-  }, [handoverValue, selectedStations]);
+    setIsCalculateEnabled(
+      hasDistrict && 
+      hasHandoverValue && 
+      isHandoverNumber && 
+      hasThreeStations
+    );
+  }, [handoverValue, selectedStations, selectedDistrict]);
 
   const handleCalculate = async () => {
     if (!isCalculateEnabled) {
-      if (selectedStations.length !== 3) {
+      if (!selectedDistrict) {
+        alert('Пожалуйста, выберите район');
+      } else if (selectedStations.length !== 3) {
         alert('Пожалуйста, выберите ровно 3 базовые станции для расчета');
       } else if (handoverValue.trim() === '') {
         alert('Пожалуйста, введите значение хэндовера');
@@ -45,20 +57,42 @@ const MainLayout: React.FC = () => {
     }
 
     try {
-      // Здесь будет вызов API для расчета
-      // const result = await calculateOptimization({
-      //   districtId: selectedDistrict,
-      //   buildingDensity,
-      //   handoverValue,
-      //   selectedStationIds: selectedStations
-      // });
+      setIsCalculating(true);
       
-      // Временно используем моковый результат
+      // Получаем station_id для выбранных станций
+      const selectedStationObjects = stations.filter(station => 
+        selectedStations.includes(station.id)
+      );
       
+      // Преобразуем UUID в station_id (число)
+      const stationIds = selectedStationObjects.map(station => 
+        station.station_id.toString()
+      );
+
+      console.log('Отправляю данные на расчет:', {
+        districtId: selectedDistrict,
+        stationIds: stationIds,
+        buildingDensity: buildingDensity,
+        handoverValue: handoverValue
+      });
+
+      // Вызов API для расчета
+      const result = await calculateOptimization({
+        districtId: selectedDistrict,
+        stationIds: stationIds,
+        buildingDensity: buildingDensity,
+        handoverValue: handoverValue
+      });
+
+      console.log('Получен результат:', result);
+      setCalculationResult(result);
       setIsModalOpen(true);
-    } catch (err) {
-      alert('Ошибка при расчете оптимизации. Пожалуйста, попробуйте еще раз.');
+      
+    } catch (err: any) {
       console.error('Calculation error:', err);
+      alert(`Ошибка при расчете оптимизации: ${err.message || 'Пожалуйста, попробуйте еще раз'}`);
+    } finally {
+      setIsCalculating(false);
     }
   };
 
@@ -128,6 +162,13 @@ const MainLayout: React.FC = () => {
             <div className="footerStats">
               <div className="statDivider"></div>
               <div className="stat">
+                <p className="statLabel">Выбран район</p>
+                <p className={`statValue ${selectedDistrict ? 'valid' : 'invalid'}`}>
+                  {selectedDistrict ? '✓' : 'не выбран'}
+                </p>
+              </div>
+              <div className="statDivider"></div>
+              <div className="stat">
                 <p className="statLabel">Выбрано станций</p>
                 <p className={`statValue ${selectedStations.length === 3 ? 'valid' : 'invalid'}`}>
                   {selectedStations.length} <span className="statUnit">/ 3</span>
@@ -143,12 +184,21 @@ const MainLayout: React.FC = () => {
             </div>
             
             <button 
-              className={`calculateButton ${isCalculateEnabled ? 'active' : 'disabled'}`} 
+              className={`calculateButton ${isCalculateEnabled ? 'active' : 'disabled'} ${isCalculating ? 'calculating' : ''}`} 
               onClick={handleCalculate}
-              disabled={!isCalculateEnabled}
+              disabled={!isCalculateEnabled || isCalculating}
             >
-              <span className="material-symbols-outlined">calculate</span>
-              Рассчитать оптимизацию
+              {isCalculating ? (
+                <>
+                  <span className="material-symbols-outlined spinning">refresh</span>
+                  Расчет...
+                </>
+              ) : (
+                <>
+                  <span className="material-symbols-outlined">calculate</span>
+                  Рассчитать оптимизацию
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -157,8 +207,8 @@ const MainLayout: React.FC = () => {
       <ResultsModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        calculationResult={calculationResult}
         buildingDensity={buildingDensity}
-        calculationResult={mockResult}
       />
     </div>
   );
