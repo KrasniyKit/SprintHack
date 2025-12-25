@@ -27,10 +27,13 @@ class BaseStationViewSet(viewsets.ModelViewSet):
 class CalculationViewSet(APIView):
     """API вьюшка для расчетов"""
     def get(self, request):
-        district_id = request.query_params.get('district_id')
+        params = request.query_params
+        station_ids = [params['st1'], params['st2'], params['st3']]
+        unique_stations = [get_object_or_404(BaseStation, station_id = station_id) for station_id in station_ids]
+        district_id = params.get('district_id')
         district = get_object_or_404(District, id=district_id)
         queryset = BaseStation.objects.all()
-        result = MinimumStationsCalculator.calculate_stations_for_district(district, list(queryset))
+        result = MinimumStationsCalculator.calculate_stations_for_district(district, list(queryset),unique_stations)
         serializer = CalculationsResultSerializer(result)
         return Response(serializer.data)
 
