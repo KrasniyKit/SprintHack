@@ -17,7 +17,7 @@ class BaseStationSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseStation
         fields = [
-            'id', 'station_id', 'name', 'coverage_area', 'frequency',
+            'id', 'station_id', 'name', 'cover_area', 'frequency',
             'ant_type', 'handover_min', 'handover_max', 'standard',
             'coordinates', 'real_handover', 'cover_radius', 'cover_diameter'
         ]
