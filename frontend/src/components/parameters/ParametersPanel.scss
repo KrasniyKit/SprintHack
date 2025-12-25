@@ -1,0 +1,259 @@
+@import '../../styles/variables';
+
+.parametersCard {
+  background: $white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid $gray-200;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  
+  .dark & {
+    background: $gray-800;
+    border-color: $gray-700;
+  }
+}
+
+.parametersHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid $gray-100;
+  
+  span {
+    color: $primary-color;
+  }
+  
+  h3 {
+    color: $gray-900;
+    font-size: 1.125rem;
+    font-weight: 700;
+    
+    .dark & {
+      color: $white;
+    }
+  }
+  
+  .dark & {
+    border-bottom-color: $gray-700;
+  }
+}
+
+.parameterSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sectionTitle {
+  color: $gray-900;
+  font-size: 0.875rem;
+  font-weight: 600;
+  
+  .dark & {
+    color: $white;
+  }
+}
+
+.densityButtons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  padding: 0.25rem;
+  background: $gray-100;
+  border-radius: 0.5rem;
+  
+  .dark & {
+    background: $gray-900;
+  }
+}
+
+.densityButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  color: $gray-500;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 200ms;
+  
+  &:hover {
+    color: $gray-900;
+  }
+  
+  &.active {
+    background: $white;
+    color: $primary-color;
+    font-weight: 700;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  span {
+    font-size: 1.125rem;
+  }
+  
+  .dark & {
+    color: $gray-400;
+    
+    &:hover {
+      color: $white;
+    }
+    
+    &.active {
+      background: $gray-700;
+      border-color: rgba($white, 0.1);
+    }
+  }
+}
+
+.handoverInput {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid $gray-200;
+  transition: border-color 200ms;
+  
+  &:hover {
+    border-color: $gray-300;
+  }
+  
+  &.empty {
+    border-color: $error-color;
+    background: rgba($error-color, 0.05);
+  }
+  
+  .dark & {
+    border-color: $gray-700;
+    
+    &:hover {
+      border-color: $gray-600;
+    }
+    
+    &.empty {
+      border-color: $error-color;
+      background: rgba($error-color, 0.1);
+    }
+  }
+}
+
+.handoverLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.handoverIcon {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  background: rgba($primary-color, 0.1);
+  color: $primary-color;
+  
+  .dark & {
+    background: rgba($primary-color, 0.3);
+  }
+}
+
+.handoverTitle {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $gray-900;
+  
+  .dark & {
+    color: $white;
+  }
+}
+
+.handoverDescription {
+  display: block;
+  font-size: 0.75rem;
+  color: $gray-500;
+  
+  .dark & {
+    color: $gray-400;
+  }
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.handoverValueInput {
+  width: 6rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.75rem;
+  border: 1px solid $gray-300;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $gray-900;
+  background: $white;
+  text-align: left;
+  
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+  }
+  
+  .dark & {
+    background: $gray-900;
+    border-color: $gray-600;
+    color: $white;
+    
+    &:focus {
+      border-color: $primary-color;
+    }
+  }
+}
+
+.inputUnit {
+  position: absolute;
+  right: 0.75rem;
+  color: $gray-500;
+  font-size: 0.875rem;
+  font-weight: 500;
+  pointer-events: none;
+  
+  .dark & {
+    color: $gray-400;
+  }
+}
+
+.validationHint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  background: rgba($error-color, 0.1);
+  color: $error-color;
+  font-size: 0.75rem;
+  font-weight: 500;
+  
+  span {
+    font-size: 1rem;
+  }
+  
+  .dark & {
+    background: rgba($error-color, 0.2);
+  }
+}

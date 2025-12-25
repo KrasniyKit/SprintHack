@@ -1,0 +1,223 @@
+@import '../../styles/variables';
+
+.districtCard {
+  background: $secondary-bg;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba($primary-color, 0.2);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  
+  .dark & {
+    background: rgba($primary-color, 0.2);
+    border-color: rgba($primary-color, 0.2);
+  }
+}
+
+.backgroundPattern {
+  position: absolute;
+  right: -1.5rem;
+  top: -1.5rem;
+  width: 8rem;
+  height: 8rem;
+  background: rgba($white, 0.2);
+  border-radius: 50%;
+  filter: blur(2rem);
+  pointer-events: none;
+  
+  .dark & {
+    background: rgba($white, 0.05);
+  }
+}
+
+.districtHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 10;
+  
+  span {
+    color: $primary-color;
+    
+    .dark & {
+      color: lighten($primary-color, 20%);
+    }
+  }
+  
+  h3 {
+    color: $text-dark;
+    font-size: 1.125rem;
+    font-weight: 700;
+    
+    .dark & {
+      color: $white;
+    }
+  }
+}
+
+.districtContent {
+  position: relative;
+  z-index: 10;
+}
+
+.districtFormGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-bottom: 1rem;
+}
+
+.districtLabel {
+  color: $gray-700;
+  font-size: 0.875rem;
+  font-weight: 600;
+  
+  .dark & {
+    color: rgba($white, 0.8);
+  }
+}
+
+.selectWrapper {
+  position: relative;
+}
+
+.districtSelect {
+  width: 100%;
+  height: 3rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: rgba($white, 0.6);
+  padding: 0 1rem 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  appearance: none;
+  
+  &:focus {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+  
+  .dark & {
+    background: rgba($gray-900, 0.6);
+    color: $gray-300;
+  }
+}
+
+.selectIcon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding-right: 0.75rem;
+  pointer-events: none;
+  color: $gray-500;
+}
+
+.coordinatesGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.coordinateField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.coordinateLabel {
+  color: $gray-700;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  
+  .dark & {
+    color: rgba($white, 0.8);
+  }
+}
+
+.coordinateInput {
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: rgba($white, 0.4);
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+  font-family: monospace;
+  color: $gray-600;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(8px);
+  cursor: default;
+  
+  &:focus {
+    outline: none;
+  }
+  
+  .dark & {
+    background: rgba($gray-900, 0.4);
+    color: $gray-300;
+  }
+}
+
+.areaInfo {
+  padding-top: 1rem;
+  border-top: 1px solid rgba($text-dark, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  
+  .dark & {
+    border-top-color: rgba($white, 0.1);
+  }
+}
+
+.areaLabel {
+  display: block;
+  color: $gray-600;
+  font-size: 0.75rem;
+  font-weight: 500;
+  
+  .dark & {
+    color: rgba($white, 0.6);
+  }
+}
+
+.areaValue {
+  color: $text-dark;
+  font-size: 1.5rem;
+  font-weight: 900;
+  
+  .dark & {
+    color: $white;
+  }
+}
+
+.areaUnit {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $gray-600;
+  
+  .dark & {
+    color: rgba($white, 0.6);
+  }
+}
+
+.areaInfo span[class*="material-symbols-outlined"] {
+  color: $gray-400;
+  font-size: 2rem;
+  
+  .dark & {
+    color: rgba($primary-color, 0.3);
+  }
+}
