@@ -1,0 +1,396 @@
+@import '../../styles/variables';
+
+.layoutContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+  
+  @media (min-width: 768px) {
+    padding: 2rem;
+  }
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 75rem;
+  flex: 1;
+  gap: 2rem;
+}
+
+.pageHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+.pageHeader h1 {
+  color: $text-dark;
+  font-size: 1.875rem;
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: -0.033em;
+  
+  @media (min-width: 768px) {
+    font-size: 2.25rem;
+  }
+  
+  .dark & {
+    color: $white;
+  }
+}
+
+.pageHeader p {
+  color: $gray-500;
+  font-size: 1rem;
+  font-weight: 400;
+  
+  .dark & {
+    color: $gray-400;
+  }
+}
+
+.headerActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.saveButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: $white;
+  border: 1px solid $gray-200;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $gray-700;
+  cursor: pointer;
+  transition: all 200ms;
+  
+  &:hover {
+    background: $gray-100;
+  }
+  
+  .dark & {
+    background: $gray-800;
+    border-color: $gray-700;
+    color: $gray-300;
+    
+    &:hover {
+      background: $gray-700;
+    }
+  }
+  
+  span {
+    font-size: 1.125rem;
+  }
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 2fr;
+    gap: 1.5rem;
+  }
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.footerActions {
+  position: sticky;
+  bottom: 1rem;
+  z-index: 40;
+  background: rgba($gray-900, 0.8);
+  color: $white;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba($white, 0.1);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  
+  @media (min-width: 640px) {
+    flex-direction: row;
+    align-items: center;
+    max-width: 75rem;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  .dark & {
+    background: rgba($gray-800, 0.9);
+  }
+}
+
+.footerStats {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+  
+  @media (min-width: 640px) {
+    display: flex;
+  }
+}
+
+.statDivider {
+  height: 2.5rem;
+  width: 1px;
+  background: rgba($white, 0.2);
+  
+  &:first-child {
+    margin-left: 0;
+  }
+  
+  &:last-child {
+    margin-right: 1rem;
+  }
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba($white, 0.6);
+}
+
+.statValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.statUnit {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: rgba($white, 0.4);
+}
+
+.calculateButton {
+  flex: 1;
+  min-width: 12.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  height: 3rem;
+  padding: 0 2rem;
+  background: $primary-color;
+  color: $white;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.015em;
+  border: none;
+  cursor: pointer;
+  transition: all 200ms;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  
+  &:hover {
+    background: lighten($primary-color, 10%);
+    
+    span:first-child {
+      animation: pulse 1s infinite;
+    }
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+  
+  &.disabled {
+    background: $gray-400;
+    cursor: not-allowed;
+    
+    &:hover {
+      background: $gray-400;
+      transform: none;
+      
+      span:first-child {
+        animation: none;
+      }
+    }
+  }
+  
+  &.active {
+    background: $primary-color;
+    cursor: pointer;
+  }
+  
+  span:first-child {
+    margin-right: 0.5rem;
+  }
+  
+  @media (min-width: 640px) {
+    flex: none;
+  }
+
+  &.calculating {
+    background: $gray-500;
+    cursor: wait;
+    
+    &:hover {
+      background: $gray-500;
+      transform: none;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.statValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  
+  &.valid {
+    color: $primary-color;
+  }
+  
+  &.invalid {
+    color: #ef4444;
+  }
+}
+
+.statUnit {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: rgba($white, 0.4);
+}
+
+.error-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $white;
+  z-index: 9999;
+  
+  .dark & {
+    background: $gray-900;
+  }
+}
+
+.error-content {
+  text-align: center;
+  max-width: 28rem;
+  padding: 2rem;
+}
+
+.error-icon {
+  font-size: 4rem;
+  color: #ef4444;
+  margin-bottom: 1rem;
+}
+
+.error-content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $gray-900;
+  margin-bottom: 0.5rem;
+  
+  .dark & {
+    color: $white;
+  }
+}
+
+.error-content p {
+  color: $gray-600;
+  margin-bottom: 1.5rem;
+  
+  .dark & {
+    color: $gray-400;
+  }
+}
+
+.error-note {
+  font-size: 0.875rem;
+  color: $gray-500;
+  font-style: italic;
+}
+
+.retry-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: $primary-color;
+  color: $white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 200ms;
+  
+  &:hover {
+    background: lighten($primary-color, 10%);
+  }
+}
+
+.spinner {
+  animation: rotate 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

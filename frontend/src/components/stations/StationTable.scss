@@ -1,0 +1,425 @@
+@import '../../styles/variables';
+
+.stationCard {
+  background: $white;
+  border-radius: 0.75rem;
+  border: 1px solid $gray-200;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  
+  .dark & {
+    background: $gray-800;
+    border-color: $gray-700;
+  }
+}
+
+.stationHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-bottom: 1px solid $gray-100;
+  
+  .dark & {
+    border-bottom-color: $gray-700;
+  }
+}
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.titleIcon {
+  color: $primary-color;
+  background: rgba($primary-color, 0.1);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  
+  .dark & {
+    background: rgba($primary-color, 0.2);
+  }
+}
+
+.stationHeader h3 {
+  color: $gray-900;
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  
+  .dark & {
+    color: $white;
+  }
+}
+
+.stationHeader p {
+  color: $gray-500;
+  font-size: 0.875rem;
+  
+  .dark & {
+    color: $gray-400;
+  }
+}
+
+.selectionCounter {
+  padding: 0.5rem 1rem;
+  background: $primary-color;
+  color: $white;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.tableContainer {
+  overflow-x: auto;
+}
+
+.stationTable {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.stationTable thead tr {
+  background: $gray-100;
+  border-bottom: 1px solid $gray-200;
+  
+  .dark & {
+    background: rgba($gray-900, 0.5);
+    border-bottom-color: $gray-700;
+  }
+}
+
+.stationTable th {
+  padding: 1rem 1.5rem;
+  font-size: 0.75rem;
+  color: $gray-500;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  
+  .dark & {
+    color: $gray-400;
+  }
+}
+
+.actionsHeader {
+  text-align: center;
+}
+
+.tableRow {
+  border-bottom: 1px solid $gray-100;
+  transition: background-color 200ms;
+  cursor: pointer;
+  
+  &:hover {
+    background: rgba($primary-color, 0.05);
+  }
+  
+  &.selected {
+    background: rgba($primary-color, 0.1);
+  }
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  .dark & {
+    border-bottom-color: $gray-700;
+    
+    &:hover {
+      background: rgba($gray-700, 0.3);
+    }
+    
+    &.selected {
+      background: rgba($primary-color, 0.2);
+    }
+  }
+}
+
+.stationTable td {
+  padding: 1rem 1.5rem;
+}
+
+.cellType {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.typeBadge {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.typeBadge.blue {
+  background: rgba($primary-color, 0.1);
+  color: $primary-color;
+  
+  .dark & {
+    background: rgba($primary-color, 0.4);
+  }
+}
+
+.typeBadge.purple {
+  background: rgba(147, 51, 234, 0.1);
+  color: rgb(147, 51, 234);
+  
+  .dark & {
+    background: rgba(147, 51, 234, 0.4);
+  }
+}
+
+.typeBadge.orange {
+  background: rgba(249, 115, 22, 0.1);
+  color: rgb(249, 115, 22);
+  
+  .dark & {
+    background: rgba(249, 115, 22, 0.4);
+  }
+}
+
+.stationInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stationName {
+  font-weight: 600;
+  color: $gray-900;
+  font-size: 0.875rem;
+  
+  .dark & {
+    color: $white;
+  }
+}
+
+.stationType {
+  font-size: 0.75rem;
+  color: $gray-500;
+  
+  .dark & {
+    color: $gray-400;
+  }
+}
+
+.coverageCell,
+.frequencyCell,
+.handoverCell {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.coverageValue,
+.frequencyValue,
+.handoverValue {
+  font-weight: 600;
+  color: $gray-900;
+  font-size: 0.875rem;
+  
+  .dark & {
+    color: $white;
+  }
+}
+
+.coverageUnit,
+.frequencyUnit,
+.handoverUnit {
+  font-size: 0.75rem;
+  color: $gray-500;
+  
+  .dark & {
+    color: $gray-400;
+  }
+}
+
+.standardCell {
+  display: flex;
+  align-items: center;
+}
+
+.standardBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.standardBadge.emerald {
+  background: rgba(16, 185, 129, 0.1);
+  color: rgb(16, 185, 129);
+  
+  .dark & {
+    background: rgba(16, 185, 129, 0.3);
+    color: rgb(52, 211, 153);
+  }
+}
+
+.standardBadge.amber {
+  background: rgba(245, 158, 11, 0.1);
+  color: rgb(245, 158, 11);
+  
+  .dark & {
+    background: rgba(245, 158, 11, 0.3);
+    color: rgb(251, 191, 36);
+  }
+}
+
+.actionsCell {
+  text-align: center;
+}
+
+.checkboxWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.stationCheckbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.25rem;
+  border: 2px solid $gray-300;
+  background: $white;
+  cursor: pointer;
+  transition: all 200ms;
+  
+  &:checked {
+    background: $primary-color;
+    border-color: $primary-color;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+  }
+  
+  &:focus {
+    outline: 2px solid rgba($primary-color, 0.5);
+    outline-offset: 2px;
+  }
+  
+  .dark & {
+    background: $gray-700;
+    border-color: $gray-600;
+    
+    &:checked {
+      background: $primary-color;
+      border-color: $primary-color;
+    }
+  }
+}
+
+.stationFooter {
+  padding: 1.5rem;
+  background: rgba($gray-100, 0.5);
+  border-top: 1px solid $gray-100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  
+  .dark & {
+    background: rgba($gray-900, 0.3);
+    border-top-color: $gray-700;
+  }
+}
+
+.selectionHint {
+  font-size: 0.875rem;
+  color: $gray-600;
+  margin: 0;
+  text-align: center;
+  
+  .dark & {
+    color: $gray-400;
+  }
+}
+
+.selectedStationsInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.selectedCount {
+  color: $primary-color;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.noSelection {
+  color: $gray-500;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.errorContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.errorContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.errorIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.errorContent h2 {
+  color: #ef4444;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.errorContent p {
+  color: $gray-600;
+  font-size: 1rem;
+  max-width: 400px;
+  line-height: 1.5;
+  
+  .dark & {
+    color: $gray-400;
+  }
+}
+
+.retryButton {
+  padding: 0.75rem 1.5rem;
+  background: $primary-color;
+  color: $white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 200ms;
+  
+  &:hover {
+    background: lighten($primary-color, 10%);
+    transform: translateY(-2px);
+  }
+}

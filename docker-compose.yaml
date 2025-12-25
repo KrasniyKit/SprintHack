@@ -1,9 +1,18 @@
-version:  '3.8'
-
-backend:
-  build: ./backend
-  ports:
-    - "8000:8000"
-  env_file:
-    - .env
-    -
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 127.0.0.1:8000"
+    environment:
+      - SECRET_KEY
+  frontend:
+      build: ./frontend
+      ports:
+        - "3000:3000"
+      environment:
+        - REACT_APP_API_URL=http://localhost:8000/api
+      depends_on:
+        - backend

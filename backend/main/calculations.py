@@ -48,20 +48,7 @@ class MinimumStationsCalculator:
 
 
     @staticmethod
-    def calculate_cluster_size(stations: List[BaseStation]) -> float:
-        """Метод для расчета количества базовых станций в одном кластере из формулы в ТЗ"""
-        unique_stations = []
-        seen_stations = set()
-        for station in sorted(stations, key=lambda s: s.cover_diameter,
-                              reverse=True):  # Проходим по массиву станций и отбираем 3 с уникальной частотой
-            if station.frequency not in seen_stations:
-                unique_stations.append(station)
-                seen_stations.add(station)
-            if len(unique_stations) == 3:
-                break
-
-        if len(unique_stations) < 3:  # Если уникальные не набрались, берем просто любые 3
-            unique_stations = list(stations)[:3]
+    def calculate_cluster_size(unique_stations: List[BaseStation]) -> float:
         unique_stations.sort(key=lambda s: s.cover_diameter, reverse=True)
         d1 = unique_stations[0].cover_diameter
         d2 = unique_stations[1].cover_diameter
@@ -71,13 +58,13 @@ class MinimumStationsCalculator:
 
     @classmethod
     def calculate_stations_for_district(cls, district: District,
-                                        all_stations: List[BaseStation]) -> CalculationsResult:
+                                        all_stations: List[BaseStation],unique_stations: List[BaseStation]) -> CalculationsResult:
         """Метод для расчета минимального количества БС на район"""
 
         k = cls.BUILDING_COEFS.get(district.density)
         r0 = cls.calculate_radius(district.area)
         l = cls.calculate_avg_cells(district, all_stations)
-        c = cls.calculate_cluster_size(all_stations)
+        c = cls.calculate_cluster_size(unique_stations)
         n = l / c if c > 0 else 0
 
         handover_regulated = False
