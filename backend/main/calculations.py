@@ -74,9 +74,27 @@ class MinimumStationsCalculator:
                                         all_stations: List[BaseStation]) -> CalculationsResult:
         """Метод для расчета минимального количества БС на район"""
 
-        coef = cls.BUILDING_COEFS[district.name]
-        service_radius = cls.calculate_radius(district.area)
-        avg_cover_radius = (sum(cls.calculate_radius(station.cover_area) for station in all_stations)
-                            / len(all_stations)) if all_stations else 0
+        k = cls.BUILDING_COEFS[district.name]
+        r0 = cls.calculate_radius(district.area)
+        l = cls.calculate_avg_cells(district, all_stations)
+        c = cls.calculate_cluster_size(all_stations)
+        n = l / c if c > 0 else 0
 
+        handover_regulated = False
+        for station in all_stations:
+            if station.real_handover < station.handover_min or station.real_handover > station.handover_max:
+                handover_regulated = True
+                n*= 1.4
+                break
+        result_stations = math.ceil(n)
+        return CalculationsResult(
+            district_name=district.name,
+            area=district.area,
+            buildings_coef=k,
+            cover_radius=r0,
+            cells_quantity=l,
+            cluster_size=c,
+            handover_regulated=handover_regulated,
+            stations_quantity=result_stations,
+        )
 
