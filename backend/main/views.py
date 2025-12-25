@@ -28,7 +28,7 @@ class CalculationViewSet(APIView):
     """API вьюшка для расчетов"""
     def get(self, request):
         params = request.query_params
-        station_ids = [params['st1'], params['st2'], params['st3']]
+        station_ids = [int(params['st1']), int(params['st2']), int(params['st3'])]
         unique_stations = [get_object_or_404(BaseStation, station_id = station_id) for station_id in station_ids]
         district_id = params.get('district_id')
         district = get_object_or_404(District, id=district_id)
