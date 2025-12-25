@@ -25,15 +25,13 @@ class BaseStation(models.Model):
     frequency = models.PositiveIntegerField(verbose_name='Частота работы БС')
     ant_type = models.CharField(max_length=100, choices=ANT_TYPES,
                                 verbose_name='Тип антенны БС')
-    handover_min = models.PositiveIntegerField(max_length=100,
-                                               verbose_name="Нижняя граница хендовера БС")
-    handover_max = models.PositiveIntegerField(max_length=100,
-                                               verbose_name="Верхняя граница хендовера БС")
+    handover_min = models.IntegerField(verbose_name="Нижняя граница хендовера БС")
+    handover_max = models.IntegerField(verbose_name="Верхняя граница хендовера БС")
     standard = models.CharField(max_length=15, choices=STANDARTS,
                                 verbose_name='Стандарт связи БС')
     coordinates = models.CharField(max_length=100, verbose_name='Координаты БС')
 
-    real_handover = models.PositiveIntegerField(max_length=100, verbose_name='Актуальный хендовер')
+    real_handover = models.IntegerField(verbose_name='Актуальный хендовер')
 
     class Meta:
         verbose_name = 'Базовая станция'

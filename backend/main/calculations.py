@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from django.db.models import Avg
 from typing import List
 
-from models import BaseStation, District
+from .models import BaseStation, District
 
 
 @dataclass
@@ -24,9 +24,9 @@ class MinimumStationsCalculator:
     """Класс для расчета минимального количества станций"""
 
     BUILDING_COEFS = {
-        "Плотная": 1.21,
-        "Средняя": 0.9,
-        "Сельская": 0.47
+        "hard": 1.21,
+        "med": 0.9,
+        "low": 0.47
     }
 
     @staticmethod
@@ -40,12 +40,19 @@ class MinimumStationsCalculator:
         """Метод для подсчета количества сот с помощью формулы из ТЗшки"""
         return coef * (zone_radius / base_radius) ** 2
 
+    @classmethod
+    def calculate_avg_cells(cls,district: District,stations: List[BaseStation]) -> float:
+        service_radius = cls.calculate_radius(district.area)
+        return sum(cls.BUILDING_COEFS.get(district.density) * (service_radius / station.cover_radius) ** 2 for station in stations)
+
+
+
     @staticmethod
     def calculate_cluster_size(stations: List[BaseStation]) -> float:
         """Метод для расчета количества базовых станций в одном кластере из формулы в ТЗ"""
         unique_stations = []
         seen_stations = set()
-        for station in sorted(stations, key=lambda s: s.diameter,
+        for station in sorted(stations, key=lambda s: s.cover_diameter,
                               reverse=True):  # Проходим по массиву станций и отбираем 3 с уникальной частотой
             if station.frequency not in seen_stations:
                 unique_stations.append(station)
@@ -55,7 +62,7 @@ class MinimumStationsCalculator:
 
         if len(unique_stations) < 3:  # Если уникальные не набрались, берем просто любые 3
             unique_stations = list(stations)[:3]
-
+        unique_stations.sort(key=lambda s: s.cover_diameter, reverse=True)
         d1 = unique_stations[0].cover_diameter
         d2 = unique_stations[1].cover_diameter
         d3 = unique_stations[2].cover_diameter
@@ -64,39 +71,30 @@ class MinimumStationsCalculator:
 
     @classmethod
     def calculate_stations_for_district(cls, district: District,
-                                        stations_in_district: List[BaseStation],
                                         all_stations: List[BaseStation]) -> CalculationsResult:
-        """Метод для расчета минимального количества вышек в районе и получения результатов вычислений"""
+        """Метод для расчета минимального количества БС на район"""
 
-        coef = cls.BUILDING_COEFS[district.density]
-        service_radius = cls.calculate_radius(district.area)
-        avg_cover_radius = (sum(
-            cls.calculate_radius(s.cover_area) for s in stations_in_district)
-                            / len(stations_in_district)) if stations_in_district else 0
-
-        cell_quantity = cls.calculate_cells_number(service_radius, avg_cover_radius, coef)
-
-        cluster_size = cls.calculate_cluster_size(all_stations)
-
-        station_quantity = cluster_size / cell_quantity if cell_quantity > 0 else 0
+        k = cls.BUILDING_COEFS.get(district.density)
+        r0 = cls.calculate_radius(district.area)
+        l = cls.calculate_avg_cells(district, all_stations)
+        c = cls.calculate_cluster_size(all_stations)
+        n = l / c if c > 0 else 0
 
         handover_regulated = False
-        for station in stations_in_district:
-            if station.real_handover:
-                if station.real_handover < station.handover_min or station.real_handover > station.handover_max:
-                    handover_regulated = True
-                    station_quantity *= 1.4
-                    break
-
-        station_quantity = math.ceil(station_quantity)
-        calc_result = CalculationsResult(
+        for station in all_stations:
+            if station.real_handover < station.handover_min or station.real_handover > station.handover_max:
+                handover_regulated = True
+                n*= 1.4
+                break
+        result_stations = math.ceil(n)
+        return CalculationsResult(
             district_name=district.name,
             area=district.area,
-            buildings_coef=coef,
-            cover_radius=service_radius,
-            cells_quantity=cell_quantity,
-            cluster_size=cluster_size,
-            stations_quantity=station_quantity,
+            buildings_coef=k,
+            cover_radius=r0,
+            cells_quantity=l,
+            cluster_size=c,
             handover_regulated=handover_regulated,
+            stations_quantity=result_stations,
         )
-        return calc_result
+
