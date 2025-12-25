@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ResultsModal.scss';
 import { CalculationResult } from 'types';
 
 interface ResultsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  buildingDensity: string;
+  buildingDensity: 'low' | 'medium' | 'high';
   calculationResult: CalculationResult
 }
 
@@ -16,6 +16,15 @@ const ResultsModal: React.FC<ResultsModalProps> = ({
   calculationResult
 }) => {
   if (!isOpen) return null;
+
+  const densityVariables = {
+    low: 'Сельская',
+    medium: 'Средняя',
+    high: 'Плотная'
+  }
+
+  const densityLabel = densityVariables[buildingDensity];
+  const handoverLabel = calculationResult.lowHandoverValue ? 'Низкий' : 'Оптимальный'; 
 
   return (
     <>
@@ -40,27 +49,19 @@ const ResultsModal: React.FC<ResultsModalProps> = ({
             <div className="resultsBackgroundPattern" />
             <p className="districtLabel">Целевой район: Центральный район</p>
             <div className="summaryMain">
-              <h1 className="stationsCount">42</h1>
+              <h1 className="stationsCount">{calculationResult.totalStations}</h1>
               <span className="stationsLabel">Базовых станций требуется</span>
             </div>
             <div className="summaryBadges">
               <span className="resultBadge">
-                <span className="material-symbols-outlined">check_circle</span>
-                98% Покрытие
-              </span>
-              <span className="resultBadge">
                 <span className="material-symbols-outlined">bolt</span>
-                Оптимальная эффективность
+                {densityLabel} застройка
+              </span>
+              <span className={`resultBadge ${calculationResult.lowHandoverValue ? 'bad' : 'optimal'}`}>
+                <span className="material-symbols-outlined">check_circle</span>
+                {handoverLabel} хэндовер
               </span>
             </div>
-          </div>
-        </div>
-        
-        <div className="modalFooter">
-          <div className="primaryActions">
-            <button className="closeSecondaryButton" onClick={onClose}>
-              Закрыть
-            </button>
           </div>
         </div>
       </div>

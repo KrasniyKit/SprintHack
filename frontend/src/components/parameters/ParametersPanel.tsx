@@ -4,7 +4,7 @@ import './ParametersPanel.scss';
 interface ParametersPanelProps {
   onBuildingDensityChange: (density: 'low' | 'medium' | 'high') => void;
   onHandoverValueChange: (value: string) => void;
-  handoverValue: string; // Добавляем пропс для текущего значения
+  handoverValue: string;
 }
 
 const ParametersPanel: React.FC<ParametersPanelProps> = ({
@@ -13,6 +13,7 @@ const ParametersPanel: React.FC<ParametersPanelProps> = ({
   handoverValue,
 }) => {
   const [buildingDensity, setBuildingDensity] = useState<'low' | 'medium' | 'high'>('medium');
+  const [validationError, setValidationError] = useState<string>('');
 
   const handleDensitySelect = (density: 'low' | 'medium' | 'high') => {
     setBuildingDensity(density);
@@ -21,8 +22,28 @@ const ParametersPanel: React.FC<ParametersPanelProps> = ({
 
   const handleHandoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    onHandoverValueChange(value);
+    
+    // Проверяем, что вводится только число
+    if (value === '' || /^\d+$/.test(value)) {
+      setValidationError('');
+      onHandoverValueChange(value);
+    } else {
+      setValidationError('Введите только числовое значение');
+    }
   };
+
+  // Проверка при потере фокуса
+  const handleHandoverBlur = () => {
+    if (handoverValue.trim() === '') {
+      setValidationError('Поле обязательно для заполнения');
+    } else if (!/^\d+$/.test(handoverValue)) {
+      setValidationError('Введите только числовое значение');
+    } else {
+      setValidationError('');
+    }
+  };
+
+  const isHandoverValid = handoverValue.trim() !== '' && /^\d+$/.test(handoverValue);
 
   return (
     <div className="parametersCard">
@@ -63,14 +84,14 @@ const ParametersPanel: React.FC<ParametersPanelProps> = ({
       <div className="parameterSection">
         <span className="sectionTitle">Дополнительные параметры</span>
         
-        <div className={`handoverInput ${handoverValue.trim() === '' ? 'empty' : ''}`}>
+        <div className={`handoverInput ${!isHandoverValid && handoverValue !== '' ? 'error' : ''}`}>
           <div className="handoverLabel">
             <div className="handoverIcon">
               <span className="material-symbols-outlined">network_check</span>
             </div>
             <div>
               <span className="handoverTitle">Значение хэндовера</span>
-              <span className="handoverDescription">Количество хэндоверов в единицах</span>
+              <span className="handoverDescription">Только числовое значение в единицах</span>
             </div>
           </div>
           
@@ -79,16 +100,26 @@ const ParametersPanel: React.FC<ParametersPanelProps> = ({
               type="text"
               value={handoverValue}
               onChange={handleHandoverChange}
+              onBlur={handleHandoverBlur}
               className="handoverValueInput"
-              placeholder="Введите значение"
+              placeholder="Введите число"
+              inputMode="numeric"
+              pattern="[0-9]*"
             />
           </div>
         </div>
         
-        {handoverValue.trim() === '' && (
+        {validationError && (
+          <div className="validationError">
+            <span className="material-symbols-outlined">error</span>
+            {validationError}
+          </div>
+        )}
+        
+        {handoverValue.trim() === '' && !validationError && (
           <div className="validationHint">
             <span className="material-symbols-outlined">info</span>
-            Введите значение хэндовера для расчета
+            Введите числовое значение хэндовера для расчета
           </div>
         )}
       </div>

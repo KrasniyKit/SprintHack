@@ -11,8 +11,6 @@ export interface BaseStation {
 export interface District {
   id: string;
   name: string;
-  latitude: string;
-  longitude: string;
   area: string;
 }
 

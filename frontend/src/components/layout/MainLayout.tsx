@@ -18,17 +18,18 @@ const MainLayout: React.FC = () => {
   const [isCalculateEnabled, setIsCalculateEnabled] = useState(false);
 
   const mockResult = {
-        id: '1',
-        totalStations: 42,
-        lowHandoverValue: parseInt(handoverValue) < 50
-      };
+    id: '1',
+    totalStations: 42,
+    lowHandoverValue: parseInt(handoverValue) < 50
+  };
 
   // Проверяем условия для активации кнопки расчета
   useEffect(() => {
     const hasHandoverValue = handoverValue.trim() !== '';
+    const isHandoverNumber = /^\d+$/.test(handoverValue);
     const hasThreeStations = selectedStations.length === 3;
     
-    setIsCalculateEnabled(hasHandoverValue && hasThreeStations);
+    setIsCalculateEnabled(hasHandoverValue && isHandoverNumber && hasThreeStations);
   }, [handoverValue, selectedStations]);
 
   const handleCalculate = async () => {
@@ -37,6 +38,8 @@ const MainLayout: React.FC = () => {
         alert('Пожалуйста, выберите ровно 3 базовые станции для расчета');
       } else if (handoverValue.trim() === '') {
         alert('Пожалуйста, введите значение хэндовера');
+      } else if (!/^\d+$/.test(handoverValue)) {
+        alert('Хэндовер должен быть числовым значением');
       }
       return;
     }
@@ -133,7 +136,7 @@ const MainLayout: React.FC = () => {
               <div className="statDivider"></div>
               <div className="stat">
                 <p className="statLabel">Параметр хэндовера</p>
-                <p className={`statValue ${handoverValue.trim() !== '' ? 'valid' : 'invalid'}`}>
+                <p className={`statValue ${handoverValue.trim() !== '' && /^\d+$/.test(handoverValue) ? 'valid' : 'invalid'}`}>
                   {handoverValue || 'не задано'}
                 </p>
               </div>

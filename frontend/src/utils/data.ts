@@ -5,29 +5,21 @@ export const mockDistricts: District[] = [
   {
     id: '1',
     name: 'Центральный район',
-    latitude: '34.0522 N',
-    longitude: '118.2437 W',
     area: '42.5'
   },
   {
     id: '2',
     name: 'Северный промышленный',
-    latitude: '34.0522 N',
-    longitude: '118.2437 W',
     area: '38.2'
   },
   {
     id: '3',
     name: 'Западные пригороды',
-    latitude: '34.0522 N',
-    longitude: '118.2437 W',
     area: '56.8'
   },
   {
     id: '4',
     name: 'Восточные холмы',
-    latitude: '34.0522 N',
-    longitude: '118.2437 W',
     area: '29.3'
   }
 ];

@@ -45,28 +45,6 @@ const DistrictSelector: React.FC<DistrictSelectorProps> = ({
           </div>
         </label>
         
-        <div className="coordinatesGrid">
-          <label className="coordinateField">
-            <span className="coordinateLabel">Широта</span>
-            <input
-              type="text"
-              readOnly
-              value={selected.latitude}
-              className="coordinateInput"
-            />
-          </label>
-          
-          <label className="coordinateField">
-            <span className="coordinateLabel">Долгота</span>
-            <input
-              type="text"
-              readOnly
-              value={selected.longitude}
-              className="coordinateInput"
-            />
-          </label>
-        </div>
-        
         <div className="areaInfo">
           <div>
             <span className="areaLabel">Расчетная площадь</span>
