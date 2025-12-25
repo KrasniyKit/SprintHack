@@ -7,7 +7,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 import json
 
 from . import serializers
-from .calculations import MinimumStationsCalculator
+from .calculations import MinimumStationsCalculator, CalculationsResult
 from .models import BaseStation, District
 from .serializers import DistrictSerializer, BaseStationSerializer, CalculationsResultSerializer
 
@@ -24,17 +24,16 @@ class BaseStationViewSet(viewsets.ModelViewSet):
     filterset_fields = ['district', 'standard', 'ant_type']
     search_fields = ['name']
 
-class CalculationViewSet(viewsets.ViewSet):
+class CalculationViewSet(APIView):
     """API вьюшка для расчетов"""
-
-    @action(detail=False, methods=['get'])
-    def calculate(self, request):
+    def get(self, request):
         district_id = request.query_params.get('district_id')
-        district = get_object_or_404(District, pk=district_id)
-        stations = BaseStation.objects.all()
-        result = MinimumStationsCalculator.calculate_stations_for_district(district,list(stations))
+        district = get_object_or_404(District, id=district_id)
+        queryset = BaseStation.objects.all()
+        result = MinimumStationsCalculator.calculate_stations_for_district(district, list(queryset))
         serializer = CalculationsResultSerializer(result)
         return Response(serializer.data)
+
 
 
 
