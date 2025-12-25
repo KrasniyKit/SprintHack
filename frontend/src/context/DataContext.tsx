@@ -32,6 +32,9 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [isDemoMode, setIsDemoMode] = useState(false);
 
   const loadData = async () => {
+    const startTime = Date.now();
+    const MIN_LOADING_TIME = 1500; // Минимальное время показа загрузки в миллисекундах
+    
     try {
       setLoading(true);
       
@@ -44,6 +47,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       setDistricts(districtsData);
       setStations(stationsData);
       setIsDemoMode(false);
+      
     } catch (err) {
       console.warn('API недоступен, используются демонстрационные данные');
       
@@ -51,8 +55,16 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       setDistricts(mockDistricts);
       setStations(mockStations);
       setIsDemoMode(true);
+      
     } finally {
-      setLoading(false);
+      // Рассчитываем оставшееся время для минимальной загрузки
+      const elapsedTime = Date.now() - startTime;
+      const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsedTime);
+      
+      // Ждем оставшееся время перед скрытием спиннера
+      setTimeout(() => {
+        setLoading(false);
+      }, remainingTime);
     }
   };
 

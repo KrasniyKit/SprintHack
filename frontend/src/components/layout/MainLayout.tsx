@@ -88,8 +88,14 @@ const MainLayout: React.FC = () => {
         });
       } catch (error) {
         result = {
-          districts: '7c003262-09d4-473a-8c6d-5381901cd06b',
-          stationsIds: ['1', '2', '3']
+          district_name: 'Название района',
+          area: 100,
+          buildings_coef: 1.17,
+          cover_radius: 55,
+          cells_quantity: 10,
+          cluster_size: 10,
+          handover_regulated: true,
+          stations_quantity: 12,
         }
       }
       
