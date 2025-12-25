@@ -36,6 +36,7 @@ api.interceptors.response.use(
 export const fetchDistricts = async (): Promise<District[]> => {
   try {
     const response = await api.get<District[]>('/districts');
+    console.log(response)
     return response.data;
   } catch (error) {
     console.error('Error fetching districts:', error);
@@ -49,6 +50,7 @@ export const fetchDistricts = async (): Promise<District[]> => {
 export const fetchBaseStations = async (): Promise<BaseStation[]> => {
   try {
     const response = await api.get<BaseStation[]>('/basestations');
+    console.log(response);
     return response.data;
   } catch (error) {
     console.error('Error fetching base stations:', error);
@@ -56,13 +58,6 @@ export const fetchBaseStations = async (): Promise<BaseStation[]> => {
   }
 };
 
-/**
- * Получить расчет оптимизации
- * @param districtId - ID района
- * @param stationIds - Массив из 3 ID станций
- * @param buildingDensity - Коэффициент застройки ('low' | 'medium' | 'high')
- * @param handoverValue - Значение хэндовера (число)
- */
 export const calculateOptimization = async ({
   districtId,
   stationIds,
