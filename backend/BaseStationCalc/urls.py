@@ -22,9 +22,10 @@ from main.views import DistrictViewSet,BaseStationViewSet, CalculationViewSet
 router = routers.SimpleRouter()
 router.register(r'districts', DistrictViewSet)
 router.register(r'basestations', BaseStationViewSet)
-router.register(r'calculations', CalculationViewSet,basename='calculations')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include(router.urls))
+    path('api/v1/', include(router.urls)),
+    path('api/v1/calculations/', CalculationViewSet.as_view(),name='calculations'),
 ]
