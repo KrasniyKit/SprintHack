@@ -24,7 +24,7 @@ class MinimumStationsCalculator:
     """Класс для расчета минимального количества станций"""
 
     BUILDING_COEFS = {
-        "high": 1.21,
+        "hard": 1.21,
         "med": 0.9,
         "low": 0.47
     }
@@ -43,7 +43,7 @@ class MinimumStationsCalculator:
     @classmethod
     def calculate_avg_cells(cls,district: District,stations: List[BaseStation]) -> float:
         service_radius = cls.calculate_radius(district.area)
-        return sum(cls.BUILDING_COEFS[district.density] * (service_radius / station.cover_radius) ** 2 for station in stations)
+        return sum(cls.BUILDING_COEFS.get(district.density) * (service_radius / station.cover_radius) ** 2 for station in stations)
 
 
 
@@ -52,7 +52,7 @@ class MinimumStationsCalculator:
         """Метод для расчета количества базовых станций в одном кластере из формулы в ТЗ"""
         unique_stations = []
         seen_stations = set()
-        for station in sorted(stations, key=lambda s: s.diameter,
+        for station in sorted(stations, key=lambda s: s.cover_diameter,
                               reverse=True):  # Проходим по массиву станций и отбираем 3 с уникальной частотой
             if station.frequency not in seen_stations:
                 unique_stations.append(station)
@@ -62,7 +62,7 @@ class MinimumStationsCalculator:
 
         if len(unique_stations) < 3:  # Если уникальные не набрались, берем просто любые 3
             unique_stations = list(stations)[:3]
-        unique_stations.sort(key=lambda s: s.diameter, reverse=True)
+        unique_stations.sort(key=lambda s: s.cover_diameter, reverse=True)
         d1 = unique_stations[0].cover_diameter
         d2 = unique_stations[1].cover_diameter
         d3 = unique_stations[2].cover_diameter
@@ -74,7 +74,7 @@ class MinimumStationsCalculator:
                                         all_stations: List[BaseStation]) -> CalculationsResult:
         """Метод для расчета минимального количества БС на район"""
 
-        k = cls.BUILDING_COEFS[district.name]
+        k = cls.BUILDING_COEFS.get(district.density)
         r0 = cls.calculate_radius(district.area)
         l = cls.calculate_avg_cells(district, all_stations)
         c = cls.calculate_cluster_size(all_stations)
